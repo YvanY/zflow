@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+// Require "rxjs" for any-observable (https://github.com/SamVerschueren/listr/pull/127)
+require('any-observable/register')(require.resolve('rxjs'));
+
+const git = require('../lib/git')
+
+git.checkWorkingTreeClean()
+  .catch(err => {
+    console.error(err.message)
+    process.exit(1)
+  })
+  .then(() => {
+    require('yargs')  // eslint-disable-line
+      .commandDir('../module')
+      .help()
+      .argv
+  })
